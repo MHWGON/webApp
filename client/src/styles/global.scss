@@ -1,0 +1,58 @@
+a,
+button,
+div,
+input,
+label,
+select,
+span,
+strong,
+textarea {
+  outline: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  min-height: 500px;
+}
+html,
+body {
+  height: 100%;
+  font-size: 16px;
+  color: black;
+  font-size: 16px;
+}
+body {
+  // min-height: 500px;
+  font-family: PingFang SC;
+}
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+body {
+  margin: 0;
+}
+img {
+  -webkit-user-drag: none;
+}
+
+.no-select {
+  -moz-user-select: none;
+  /*火狐*/
+  -webkit-user-select: none;
+  /*webkit浏览器*/
+  -ms-user-select: none;
+  /*IE10*/
+  -khtml-user-select: none;
+  /*早期浏览器*/
+  user-select: none;
+}
+

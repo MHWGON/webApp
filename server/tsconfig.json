@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,   
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "forceConsistentCasingInFileNames": true,
+      "lib": [
+          "es6"
+      ]
+  },
+  "exclude": [
+      "node_modules"
+  ]
+}
