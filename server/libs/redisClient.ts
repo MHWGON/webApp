@@ -46,7 +46,7 @@ class RedisClient {
         });
         return this.client;
     }
-    
+
     /**
      * redis setString function
      * @param key
@@ -55,7 +55,7 @@ class RedisClient {
     */
     setString = (key: string, value: string, expire: number)=> {
         return new Promise((resolve, reject) => {
-            redisClient.set(key, value,  (err: string | Record<string, any>, result: string | Record<string, any>) => {
+            this.client.set(key, value,  (err: string | Record<string, any>, result: string | Record<string, any>) => {
 
                 if (err) {
                     reject(err);
@@ -75,7 +75,7 @@ class RedisClient {
     */
     getString = (key: string) => {
       return new Promise((resolve, reject) => {
-        redisClient.get(key, function (err: string | Record<string, any>, result: string | Record<string, any>) {
+        this.client.get(key, function (err: string | Record<string, any>, result: string | Record<string, any>) {
               if (err) {
                   reject(err);
               }
@@ -91,7 +91,7 @@ class RedisClient {
     */
     removeString = (key: string) => {
       return new Promise((resolve, reject) => {
-        redisClient.get(key,  (err: string | Record<string, any>, result: string | Record<string, any>) => {
+        this.client.get(key,  (err: string | Record<string, any>, result: string | Record<string, any>) => {
               if (err) {
                   reject(err);
               }

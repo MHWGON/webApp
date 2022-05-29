@@ -3,14 +3,18 @@
       "target": "es5",
       "module": "commonjs",
       "strict": true,
-      "esModuleInterop": true,
-      "skipLibCheck": true,   
-      "emitDecoratorMetadata": true,
+      "esModuleInterop": true,   //允许将ES6模块编译为CommonJS 模块
+      "skipLibCheck": true,
       "experimentalDecorators": true,
       "forceConsistentCasingInFileNames": true,
+      "outDir": "./build",
+      "rootDir": ".",
       "lib": [
           "es6"
-      ]
+      ],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "exclude": [
       "node_modules"

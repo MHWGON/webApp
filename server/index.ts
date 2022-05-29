@@ -1,15 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
+import { Request, Response, NextFunction } from 'express';
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 // const cors = require('cors');
-var http = require('http');
-var CONST = require('./const/index');
+const http = require('http');
+const CONST = require('./const/index');
 const indexRouter = require('./routes/index');
 
-var app = express();
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -51,7 +52,7 @@ app.use(session({
     ttl: 60 * 60 * 24,  // 过期时间，默认是session.maxAge, 或者是一天
     client: redisClient.connect(),
   }),
-}))
+}));
 
 app.use(express.static('public'));
 // static前缀静态文件
@@ -60,12 +61,12 @@ app.use('/static', express.static(__dirname + '/public'));
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req: any, res: any, next: (arg0: any) => void) {
+app.use(function(req: Request, res: any, next: (arg0: any) => void) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err: { message: any; status: any; }, req: { app: { get: (arg0: string) => string; }; }, res: { locals: { message: any; error: any; }; status: (arg0: any) => void; send: (arg0: string) => void; }, next: any) {
+app.use(function(err: { message: any; status: any; }, req: Request, res: Response, next: NextFunction) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -75,10 +76,10 @@ app.use(function(err: { message: any; status: any; }, req: { app: { get: (arg0: 
 });
 
 app.set('port', CONST.port);
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 app.listen(CONST.port,()=>{
 	console.log(`server start: localhost:${CONST.port}`);
-})
+});
 
 module.exports = app;
