@@ -12,8 +12,8 @@ const CONST = require('./const/index');
 const indexRouter = require('./routes/index');
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());  // parse application/json
+app.use(express.urlencoded({ extended: false })); // parse application/www-form-urlencoded
 app.use(cookieParser());
 
 // 设置handlebars模板
