@@ -5,11 +5,11 @@ const CONST = require('../../const/index');
 const jwt = require('jsonwebtoken');
 
 // 用户注册
-const userRegister= (req: Request, res: Response) => {
+const userRegister = (req: Request, res: Response) => {
   // 获取数据
 	const { username, password } = req.body;
 	if(!username || !password) {
-		res.status(420).send({code:1, mes:'参数错误'});
+		res.status(420).send({code: 1, mes: '参数错误'});
 	} else {
 		// 先查看数据库中是否已有用户
 		User.find({username})
@@ -18,7 +18,7 @@ const userRegister= (req: Request, res: Response) => {
 				// 用户名不存在需要注册
 				return User.insertMany({ username, password });
 			} else {
-				throw '该用户名已经存在';
+				throw new Error('该用户名已经存在');
 			}
 		}).then(() => {
 			res.send({code: 0, mes: '注册成功'});
@@ -50,10 +50,10 @@ const userLogin = (req: IUserAuthInfoRequest, res: Response) => {
 					// console.log('当前唯一的会话ID，藏在cookie中的value：', `${req.sessionID}`)
 					return res.send({ code: 0, mes: '登录成功', token });
 				} else {
-					throw '用户密码错误';
+					throw new Error('用户密码错误');
 				}
 			} else {
-				throw '该用户不存在';
+				throw new Error('该用户不存在');
 			}
 		})
 		.catch((error: any) => {
@@ -86,7 +86,7 @@ const authValidate = (req: IUserAuthInfoRequest, res: any) => {
 };
 
 // 查询用户信息
-const userProfile = (req: Request, res: Response, next: NextFunction) => {
+const userProfile = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
 	try {
 		// req.headers.authorization
 		jwt.verify(req.headers.accesstoken, CONST.secretKey, (err: any, decode: any) => {
@@ -102,11 +102,11 @@ const userProfile = (req: Request, res: Response, next: NextFunction) => {
 							}
 						});
 					} else {
-						throw '用户数据查询失败';
+						throw new Error('用户数据查询失败');
 					}
 				});
 			} else {
-				throw 'JWT校验失败';
+				throw new Error('JWT校验失败');
 			}
 		});
 	} catch (error) {
@@ -118,10 +118,10 @@ const userProfile = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // 刷新accessToken
-const userRefreshToken = (req: Request & Record<string, any>, res: Response) => {
+const userRefreshToken = (req: IUserAuthInfoRequest, res: Response) => {
 	const id = req?.session.userInfo.id;
 	if (id) {
-		const token = jwt.sign({ id }, CONST.secretKey, { expiresIn: 60 *60 });
+		const token = jwt.sign({ id }, CONST.secretKey, { expiresIn: 60 * 60 });
 		// res.cookie("accessToken", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 		return res.send({ code: 0, mes: token });
 	}
