@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Example App - Home</title>
+</head>
+<body>
+
+<!-- Uses built-in `if` helper. -->
+{{#if showTitle}}
+    <h1>About</h1>
+{{/if}}
+{{#> about}}
+    default about content
+{{/about}}
+</body>
+</html>

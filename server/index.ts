@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { create } from 'express-handlebars';
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -14,6 +15,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// 设置handlebars模板
+const hbs = create({
+  extname: '.hbs',
+  defaultLayout: 'default',
+  layoutsDir: path.join(CONST.PATH.VIEW_DIST, 'layouts'),
+  partialsDir: path.join(CONST.PATH.VIEW_DIST, 'partials'), // 配置广告代码所在目录
+  helpers: {
+    foo() { return 'FOO!'; },
+    bar() { return 'BAR!'; }
+  }
+});
+app.engine('.hbs', hbs.engine);
+app.set('view engine', '.hbs');
 
 // app.use(cors(
 //   {
@@ -45,7 +60,7 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24
   },
-  resave: false,  // 强制保存sessoin即使它没有变化 默认 true
+  resave: false,  // 强制保存session即使它没有变化 默认 true
   rolling: true,  // 每次请求时强制设置cookie，这将重置cookie的过期时间 默认 false
   saveUninitialized: false,  // 强制将未初始化的session存储
   store: new RedisStore({
@@ -72,13 +87,13 @@ app.use(function(err: { message: any; status: any; }, req: Request, res: Respons
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // render the error page
   res.status(err.status || 500);
-  res.send('server error');
+  res.send('server error: '+ err.message);
 });
 
 app.set('port', CONST.port);
 const server = http.createServer(app);
 
-app.listen(CONST.port,()=>{
+app.listen(CONST.port,() => {
 	console.log(`server start: localhost:${CONST.port}`);
 });
 
