@@ -4,7 +4,7 @@ const User = require('../model/userModel.ts');
 const CONST = require('../../const/index');
 const jwt = require('jsonwebtoken');
 
-// 用户注册
+// TODO 用户注册
 const userRegister = (req: Request, res: Response) => {
   // 获取数据
 	const { username, password } = req.body;
@@ -33,7 +33,7 @@ const userLogin = (req: IUserAuthInfoRequest, res: Response) => {
 	const { username, password } = req.body;
 	// console.log('username--password', username, password)
 	if(!username || !password) {
-		res.status(420).send({code:1,mes:'参数错误'});
+		res.status(420).send({code:1, mes:'参数错误'});
 	} else {
 		User.findOne({username})
 		.then((data: Record<string, any>) => {
@@ -56,13 +56,13 @@ const userLogin = (req: IUserAuthInfoRequest, res: Response) => {
 				throw new Error('该用户不存在');
 			}
 		})
-		.catch((error: any) => {
-			return res.send({code: -1, mes: error instanceof Object ? JSON.stringify(error) : error });
+		.catch((error: Error) => {
+			return res.send({code: -1, mes: error.toString() });
 		});
 	}
 };
 
-// 退出登录
+// TODO 退出登录
 const userLogout = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
 	req.session.destory();  // 清除服务器session
 	res.clearCookie('SESSIONID');
@@ -71,7 +71,7 @@ const userLogout = (req: IUserAuthInfoRequest, res: Response, next: NextFunction
 	res.redirect('/');
 };
 
-// 用户登录态校验
+// TODO 用户登录态校验
 const authValidate = (req: IUserAuthInfoRequest, res: any) => {
 	// console.log('校验', req.session);
 	try {
@@ -85,7 +85,7 @@ const authValidate = (req: IUserAuthInfoRequest, res: any) => {
 		}
 };
 
-// 查询用户信息
+// TODO 查询用户信息
 const userProfile = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
 	try {
 		// req.headers.authorization
@@ -109,15 +109,15 @@ const userProfile = (req: IUserAuthInfoRequest, res: Response, next: NextFunctio
 				throw new Error('JWT校验失败');
 			}
 		});
-	} catch (error) {
-		if (error === 'JWT校验失败') {
+	} catch (error: any) {
+		if (error.message === 'JWT校验失败') {
 			return res.send({ code: 1001, mes: 'token已过期' });
 		}
-		return res.send({ code: -1, mes: `server error: ${error}` });
+		return res.send({ code: -1, mes: `server error: ${error.toString()}` });
 	}
 };
 
-// 刷新accessToken
+// TODO 刷新accessToken
 const userRefreshToken = (req: IUserAuthInfoRequest, res: Response) => {
 	const id = req?.session.userInfo.id;
 	if (id) {
@@ -128,4 +128,42 @@ const userRefreshToken = (req: IUserAuthInfoRequest, res: Response) => {
 	return res.send({ code: -1, mes: '刷新accessToken失败' });
 };
 
-module.exports = { userRegister, userLogin, userProfile, authValidate, userRefreshToken };
+// TODO 用户信息更新(findOneAndUpdate) username -> rename
+const userProfileUpdate = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
+	const { username } = req.body;
+	User.findOneAndUpdate({username}, {username: 'rename'}, null, (err: Error, docs: Record<any, any> | string) => {
+		if (err) {
+			res.send({code: -1, mes: err});
+		} else {
+			res.send({code: 0, mes: 'success'});
+		}
+	});
+};
+
+// TODO 用户信息更新(ById)
+const userProfileUpdateById = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
+	const { id } = req.body;
+	User.findByIdAndUpdate({_id: id}, {name: 'renameById'}, null, (err: Error, docs: any) => {
+		if (err) {
+			res.send({code: -1, mes: err});
+		} else {
+			console.log(docs, res);
+			res.send({code: 0, mes: 'success'});
+		}
+	});
+};
+
+// TODO 用户信息(findAndModify) query sort update upsert
+const userProfileFindAndUpdate = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
+	User.findAndModify();
+};
+
+module.exports = {
+	userRegister,
+	userLogin,
+	userProfile,
+	authValidate,
+	userRefreshToken,
+	userProfileUpdateById,
+	userProfileUpdate
+};

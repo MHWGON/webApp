@@ -13,6 +13,10 @@ router.use('/userProfile', userController.userProfile);
 
 router.use('/userRefreshToken', userController.userRefreshToken);
 
+router.use('/userProfileUpdate', userController.userProfileUpdate);
+
+router.use('/userProfileUpdateById', userController.userProfileUpdateById);
+
 /* GET home page. */
 router.get('/', (req: Request, res: Response) => {
   res.render('home', {
