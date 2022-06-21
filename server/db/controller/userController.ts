@@ -28,10 +28,10 @@ const userRegister = (req: Request, res: Response) => {
 	}
 };
 
-// 用户登录
+// TODO 用户登录
 const userLogin = (req: IUserAuthInfoRequest, res: Response) => {
 	const { username, password } = req.body;
-	// console.log('username--password', username, password)
+	// console.log('username--password', username, password);
 	if(!username || !password) {
 		res.status(420).send({code:1, mes:'参数错误'});
 	} else {
@@ -153,9 +153,18 @@ const userProfileUpdateById = (req: IUserAuthInfoRequest, res: Response, next: N
 	});
 };
 
-// TODO 用户信息(findAndModify) query sort update upsert
+// TODO 用户信息(findAndModify) query sort update upsert 可以使用上面的更新方法代替
 const userProfileFindAndUpdate = (req: IUserAuthInfoRequest, res: Response, next: NextFunction) => {
-	User.findAndModify();
+	const { id } = req.body;
+	// console.log('------', id, User);
+	// other $addToSet $inc
+	User.findAndModify({_id: id},[['_id', 'asc']],{$set: {'name': 'renameagain'}},null,(err: Error, docs: any) => {
+		if (err) {
+			console.log(err.message);
+		} else {
+			res.send(docs);
+		}
+	});
 };
 
 module.exports = {
@@ -165,5 +174,6 @@ module.exports = {
 	authValidate,
 	userRefreshToken,
 	userProfileUpdateById,
-	userProfileUpdate
+	userProfileUpdate,
+	userProfileFindAndUpdate,
 };

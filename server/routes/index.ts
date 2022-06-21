@@ -17,6 +17,8 @@ router.use('/userProfileUpdate', userController.userProfileUpdate);
 
 router.use('/userProfileUpdateById', userController.userProfileUpdateById);
 
+router.use('/userProfileFindAndUpdate', userController.userProfileFindAndUpdate);
+
 /* GET home page. */
 router.get('/', (req: Request, res: Response) => {
   res.render('home', {
