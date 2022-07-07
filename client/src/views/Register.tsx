@@ -1,7 +1,5 @@
-
 import { defineComponent, ref, reactive } from 'vue'
 import { ElMessage, ElForm as ElFormElem, ElForm, ElFormItem, ElButton, ElInput } from 'element-plus'
-
 import { requestUserRegister } from '@/services/user'
 
 export default defineComponent({

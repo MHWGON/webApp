@@ -4,8 +4,8 @@ import { getCookie, setCookie } from '@/assets/utils/cookie'
 
 axios.defaults.headers = axios.defaults.headers || {}
 
-// Add a request interceptor
-// 请求拦截器，发送请求前进行的一些操作，例如：给每个请求加上token
+// TODO Add a request interceptor
+// TODO 请求拦截器，发送请求前进行的一些操作，例如：给每个请求加上token
 axios.interceptors.request.use(
   function (config) {
     config.headers = config.headers || {}
@@ -20,7 +20,7 @@ axios.interceptors.request.use(
 
 let isRefreshing = false // 标记是否正在刷新 token， 防止多次刷新token
 
-// 添加响应拦截器，在接收到响应后进行的一些操作
+// TODO 添加响应拦截器，在接收到响应后进行的一些操作
 axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
   const { config } = response
