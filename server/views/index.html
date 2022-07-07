@@ -1,0 +1,37 @@
+Express-Handlebars 基础语法
+文章参考自：https://www.imooc.com/article/6923/
+
+标识
+{{}}    会转义标签
+{{{}}}   会直接替换
+
+注释
+{{! super-secret comment}}
+
+#each 辅助方法
+{{#each tours}}
+    <li>
+        {{name}}
+        {{#if ../currenty}}}
+            ({{../../cuttenty.abbery}}})
+    </li>
+{{/each}}
+
+each会遍历整个tours数字，更具tours.length为他遍历的次数。然后根据tours的每条数据去替换标识符
+这时each中的上下环境指向tours，如果想访问currenty对象，就必须先回退到最上层上下文中然后选中currenty
+使用../来访问上一级上下文
+
+#if 辅助方法
+if块中，会产生一个新的上下文。而这刚好是上一级上下文的副本
+也就是说，each语句块中的上下文是tours each中的if的上下文环境是tours的副本。tours副本的上一级是tours。所以这里要用../../才能回退到顶层
+
+unless 辅助方法
+基本上和if的辅助方法是相反的：只有参数为false时，它才会执行
+
+{{.}} 指向当前上下文
+一般数据组织方法都是放置在一个数组中
+如果数组是一个普通的数组，each会{{.}}表示遍历出这个数组的每一个元素
+如果数组是由多个对象组成，each会每一条对象作为each的上下文然后根据对象的属性名去遍历，然后根据对象的属性名去替换标示
+注意：如果属性名与handlebars辅助方法同名foo，则{{foo}} 指向辅助方法，{{./foo}} 指向属性
+
+

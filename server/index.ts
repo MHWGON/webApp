@@ -23,6 +23,13 @@ const hbs = create({
   layoutsDir: path.join(CONST.PATH.VIEW_DIST, 'layouts'),
   partialsDir: path.join(CONST.PATH.VIEW_DIST, 'partials'), // 配置广告代码所在目录
   helpers: {
+    section(name: string, options: Record<string, any>) { // 某些页面需要引入浏览器端的handlebars，其它页面没必要引入时就可以用到这个段落的概率
+      if(!this._sections) this._sections = {};
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this._sections[name] = options.fn(this);
+      return null;
+    },
     foo() { return 'FOO!'; },
     bar() { return 'BAR!'; }
   }
@@ -87,7 +94,7 @@ app.use(function(err: { message: any; status: any; }, req: Request, res: Respons
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // render the error page
   res.status(err.status || 500);
-  res.send('server error: '+ err.message);
+  res.send('server error: ' + err.message);
 });
 
 app.set('port', CONST.port);
