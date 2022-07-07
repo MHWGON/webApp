@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Example App - Home</title>
+    <title>Example App - About</title>
 </head>
 <body>
 
@@ -10,8 +10,10 @@
 {{#if showTitle}}
     <h1>About</h1>
 {{/if}}
-{{#> about}}
-    default about content
-{{/about}}
+
+<!-- 根据该选项选中partials下的不同文件 -->
+{{#> detial}}
+    about detail content
+{{/detial}}
 </body>
 </html>

@@ -19,28 +19,29 @@ router.use('/userProfileUpdateById', userController.userProfileUpdateById);
 
 router.use('/userProfileFindAndUpdate', userController.userProfileFindAndUpdate);
 
-/* GET home page. */
-router.get('/', (req: Request, res: Response) => {
+// TODO GET home page.
+router.get('/home', (req: Request, res: Response) => {
   res.render('home', {
-    // layout: false,
+    layout: false,
     showTitle: true,
     // Override `foo` helper only for this rendering.
     helpers: {
-      foo() { return 'foo.'; }
+      foo() { return 'New Foo Value'; }
     }
   });
 });
 
-/* GET home page. */
+// TODO GET about page.
 router.get('/about', (req: Request, res: Response) => {
   res.render('about', {
-    layout: false,
+    layout: false,  // TODO 默认情况下true，不使用时需要单独说明(layouts), 通过设置不同的值引用layouts下面的不同文件
     showTitle: true
   });
 });
 
-// router.use('/', function (req: Request, res: Response, next: NextFunction) {
-//   res.send('Express start');
-// });
+// TODO Express start
+router.use('/', function (req: Request, res: Response, next: NextFunction) {
+  res.send('Express start');
+});
 
 module.exports = router;

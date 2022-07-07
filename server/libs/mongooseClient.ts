@@ -23,7 +23,7 @@ class MongooseClient {
 			this.client = mongoose.connection;	// 数据库链接对象
     }
 	public static getInstance() {
-		if(this.singleClient === null) {
+		if (this.singleClient === null) {
 			this.singleClient = new MongooseClient('mongodb://localhost/mongoDB');
 		}
 		return this.singleClient;
